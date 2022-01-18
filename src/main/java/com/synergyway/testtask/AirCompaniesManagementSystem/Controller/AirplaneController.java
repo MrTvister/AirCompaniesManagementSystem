@@ -26,9 +26,7 @@ public class AirplaneController {
             return ResponseEntity.badRequest().body("There is no Plaine with id = " + id);
         } else return ResponseEntity.ok().body(airplane);
     }
-
-    //    @PostMapping
-//
+    // Method to change Plain Owner by Company name
     @PutMapping("/reasign/{id}")
     public ResponseEntity reasignAirplane(@PathVariable Long id, @RequestParam("airCompany") String airCompanyName) {
         Airplane airplane = airplainService.reasignPlane(id, airCompanyName);
@@ -38,7 +36,7 @@ public class AirplaneController {
             return ResponseEntity.badRequest().body("Error");
         }
     }
-
+    // There is a problem with aircompany id (it could by non existed)
     @PostMapping
     public void addNewAirplain(@RequestBody Airplane airplane) {
         airplainService.addNewPlain(airplane);

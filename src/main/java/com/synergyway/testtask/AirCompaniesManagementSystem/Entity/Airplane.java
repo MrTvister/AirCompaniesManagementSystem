@@ -3,10 +3,7 @@ package com.synergyway.testtask.AirCompaniesManagementSystem.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -14,7 +11,10 @@ import java.time.LocalDate;
 @Getter
 public class Airplane {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+//    @SequenceGenerator(name="SEQ_GEN", sequenceName="SEQ_JUST_FOR_Airplane", allocationSize=1)
+//    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_GEN")
     private Long ID;
     private String name;
     private String factorySerialNumber;

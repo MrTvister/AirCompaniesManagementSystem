@@ -10,6 +10,8 @@ services:
       - MYSQL_PASSWORD=pass
     ports:
     - "3307:3306"
+    security_opt:
+    - seccomp:unconfined
     healthcheck:
       test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
 

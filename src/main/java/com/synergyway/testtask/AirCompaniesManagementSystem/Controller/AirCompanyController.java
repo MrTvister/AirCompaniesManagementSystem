@@ -7,6 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,6 @@ import java.util.List;
 public class AirCompanyController {
     @Autowired
     private AirCompanyRepository airCompanyRepository;
-
 
     @GetMapping
     public List<AirCompany> getAllAirCompany() {
@@ -51,6 +51,10 @@ public class AirCompanyController {
 
     @PostMapping
     public ResponseEntity addNewAirCompany(@RequestBody AirCompany airCompany) {
-        return ResponseEntity.ok().body(airCompanyRepository.save(airCompany));
+        try {
+            return ResponseEntity.ok().body(airCompanyRepository.save(airCompany));
+        }catch (Exception ex){
+            return ResponseEntity.badRequest().body("Error!");
+        }
     }
 }

@@ -24,19 +24,13 @@ public class FlightService {
     @Autowired
     private FlightRepository flightRepository;
 
-    public List<Flight> findFlightByStatus(FlightStatus flightStatus) {
-        List<Flight> flightList = new ArrayList<>();
-//        flightRepository.findAll().iterator().forEachRemaining(x -> x.getFlightStatus().equals(flightStatus));
-
-        return flightList;
-    }
-
     public void addNewFlight(Flight flight) {
         flightRepository.save(flight);
     }
 
     public Flight changeStatus(Long id, FlightStatus flightStatus, LocalDateTime localDateTime) {
-        Flight flight = flightRepository.findById(id).get();
+        Flight flight = flightRepository.findById(id).orElse(null);
+        if(flight == null) return null;
         flight.setFlightStatus(flightStatus);
         switch (flightStatus) {
             case ACTIVE:
@@ -50,13 +44,6 @@ public class FlightService {
                 break;
         }
         return flightRepository.save(flight);
-    }
-
-    public List<Flight> getAllFlightsIsComplitedWhitOptionInTime() {
-        List<Flight> flightList = new ArrayList<>();
-//        flightRepository.findAllByFlightStatus(FlightStatus.COMPLETED).spliterator()
-//                .forEachRemaining(x -> x.getEstimatedFlightTime() > x.getEndedAt().).forEach(flightList::add);
-        return flightList;
     }
 
     public List<Flight> getAllFlights() {
@@ -89,6 +76,7 @@ public class FlightService {
         return flightList;
     }
 
+    // Translate Estimated Time string to minutes
     private long toMins(String s) {
         String[] hourMin = s.split(":");
         long hour = Integer.parseInt(hourMin[0]);
