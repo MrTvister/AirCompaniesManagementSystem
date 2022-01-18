@@ -1,0 +1,29 @@
+version: '3'
+services:
+
+  mysql-stan:
+    image: 'mysql:8'
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_DATABASE=TestTaskDatabase
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=pass
+    ports:
+    - "3307:3306"
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+
+  springboot-docker-container:
+    image: testtask-docker-container
+    ports:
+    - "8080:8088"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-stan:3306/TestTaskDatabase
+      SPRING_DATASOURCE_USERNAME: "admin"
+      SPRING_DATASOURCE_PASSWORD: "pass"
+    build:
+      context: "./"
+      dockerfile: "Dockerfile"
+    depends_on:
+      mysql-stan:
+        condition: service_healthy
